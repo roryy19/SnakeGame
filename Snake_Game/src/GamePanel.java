@@ -3,8 +3,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
 
-import javax.swing.JPanel;
-
 public class GamePanel extends JPanel implements ActionListener{
 
     static final int SCREEN_WIDTH = 600;
@@ -18,9 +16,14 @@ public class GamePanel extends JPanel implements ActionListener{
     final int y[] = new int[GAME_UNITS]; 
     int bodyParts = 6; // initial # of body parts
     
-    int applesEaten;
+    int applesEaten;    
     int appleX;
     int appleY;
+
+    int retryButtonX;
+    int retryButtonY;
+    int retryButtonWidth;
+    int retryButtonHeight;
     
     char direction = 'R'; // snake begins game going right
 
@@ -31,9 +34,15 @@ public class GamePanel extends JPanel implements ActionListener{
     GamePanel() {
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.DARK_GRAY);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
+        this.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                checkClick(e.getX(), e.getY());
+            }
+        });
 
         startGame();
     }
@@ -139,16 +148,49 @@ public class GamePanel extends JPanel implements ActionListener{
             timer.stop();
         }
     }
+    public void checkClick(int x, int y) {
+        // play again button
+        if (!running) { // top left origin
+            if (x >= retryButtonX && x <= (retryButtonX + retryButtonWidth) // within x coords
+                && y >= retryButtonY && y <= (retryButtonY + retryButtonHeight)) { // within y coords
+                resetGame();
+            }
+        }
+    }
+    public void resetGame() {
+        applesEaten = 0;
+        bodyParts = 6;
+        for (int i = 0; i < bodyParts; i++) { // make previous snake not stay on screen
+            x[i] = -1;
+            y[i] = -1;
+        }
+        direction = 'R';
+        x[0] = 0; // set snake back to top left
+        y[0] = 0;
+
+        startGame();
+    }
     public void gameOver(Graphics g) {
         // game over text
         g.setColor(Color.RED);
         g.setFont(new Font("Ink Free",Font.BOLD, 75));
-        FontMetrics metrics1 = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (SCREEN_WIDTH - metrics1.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 2);
+        FontMetrics metricsGameOver = getFontMetrics(g.getFont());
+        g.drawString("Game Over", (SCREEN_WIDTH - metricsGameOver.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 3);
         g.setColor(Color.RED);
         g.setFont(new Font("Ink Free",Font.BOLD, 20));
-        FontMetrics metrics2 = getFontMetrics(g.getFont());
-        g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metrics2.stringWidth("Score : "+applesEaten)) / 2, g.getFont().getSize());
+        FontMetrics metricsScoreEnd = getFontMetrics(g.getFont());
+        g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metricsScoreEnd.stringWidth("Score : "+applesEaten)) / 2, g.getFont().getSize());
+
+        // play again button
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Ink Free", Font.BOLD, 85));
+        FontMetrics metricsPlayAgain = getFontMetrics(g.getFont());
+        retryButtonX = (SCREEN_WIDTH - metricsPlayAgain.stringWidth("Play Again")) / 2;
+        retryButtonY = (SCREEN_HEIGHT / 2 + metricsPlayAgain.getHeight());
+        retryButtonWidth = metricsPlayAgain.stringWidth("Play Again"); // width of text
+        retryButtonHeight = metricsPlayAgain.getHeight();   // height of text
+        g.drawString("Play Again", retryButtonX, retryButtonY);
+        retryButtonY = retryButtonY - metricsPlayAgain.getAscent(); // gets top of highest character, for mouse click
     }
     @Override
     public void actionPerformed(ActionEvent e) {
