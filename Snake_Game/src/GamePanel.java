@@ -11,7 +11,7 @@ public class GamePanel extends JPanel implements ActionListener{
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE; // amount of units that can fit on screen
-    int DELAY = 75;
+    int DELAY = 80;
     
     // body of snake
     final int x[] = new int[GAME_UNITS]; // snake wont be bigger than game
