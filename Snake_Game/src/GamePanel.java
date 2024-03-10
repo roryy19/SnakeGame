@@ -9,7 +9,7 @@ public class GamePanel extends JPanel implements ActionListener{
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
     static final int GAME_UNITS = (SCREEN_WIDTH * SCREEN_HEIGHT) / UNIT_SIZE; // amount of units that can fit on screen
-    int DELAY = 80;
+    int DELAY = 75;
     
     // body of snake
     final int x[] = new int[GAME_UNITS]; // snake wont be bigger than game
@@ -19,6 +19,19 @@ public class GamePanel extends JPanel implements ActionListener{
     int applesEaten;    
     int appleX;
     int appleY;
+    
+    boolean newLevelCondition = true;
+    String newLevelString = "";
+
+    final int[] LEVEL_DELAYS = {75, 65, 55, 45, 35};
+    final String[] LEVEL_MESSAGES = {
+    "Level 1: Speed = 10",
+    "Level 2: Speed = 20",
+    "Level 3: Speed = 30",
+    "Level 4: Speed = 40",
+    "*FINAL LEVEL*: Speed = 50" 
+    };
+    int currentLevel = 0;
 
     int retryButtonX;
     int retryButtonY;
@@ -50,11 +63,21 @@ public class GamePanel extends JPanel implements ActionListener{
         newApple();
         running = true;
         timer = new Timer(DELAY, this);
+        showNewLevelText();
         timer.start();
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         draw(g);
+
+        if (newLevelCondition) {
+            g.setColor(Color.YELLOW);
+            g.setFont(new Font("Ink Free", Font.BOLD, 40));
+            FontMetrics metricsNewLevel = g.getFontMetrics();
+            int x = (getWidth() - metricsNewLevel.stringWidth(newLevelString)) / 2;
+            int y = (getHeight() / 2 - metricsNewLevel.getAscent());
+            g.drawString(newLevelString, x, y);
+        }
     }
     public void draw(Graphics g) {
         if (running) {
@@ -118,8 +141,35 @@ public class GamePanel extends JPanel implements ActionListener{
         if ((x[0] == appleX) && (y[0] == appleY)) { 
             bodyParts++;
             applesEaten++;
+            if ((applesEaten % 10 )== 0 && DELAY > 40) { // every 10 apples eaten, increase delay as long as it greater than 30
+                currentLevel++;
+                DELAY -= 10;
+                timer.stop();
+                timer = new Timer(DELAY, this);
+                timer.start();
+                showNewLevelText();
+            }
             newApple();
         }
+    }
+    public void showNewLevelText() {
+        /*
+        LEVEL   DELAY 
+        1       75
+        2       65
+        3       55
+        4       45
+        5       35
+         */
+        newLevelCondition = true;
+        newLevelString = LEVEL_MESSAGES[currentLevel];
+        repaint();
+        Timer clearNewLevelText = new Timer(2000, e -> { // clear flag after 1 second
+            newLevelCondition = false;
+            repaint(); // remove text
+        });
+        clearNewLevelText.setRepeats(false); // timer only triggers once
+        clearNewLevelText.start();
     }
     public void checkCollision() {
         // check if head collides w/ body, iterate through body parts
@@ -167,6 +217,8 @@ public class GamePanel extends JPanel implements ActionListener{
         direction = 'R';
         x[0] = 0; // set snake back to top left
         y[0] = 0;
+        DELAY = 75; // reset snake speed
+        currentLevel = 0; // reset level
 
         startGame();
     }
