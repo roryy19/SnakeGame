@@ -2,6 +2,9 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import java.util.Random;
+//import javax.sound.sampled.*;
+//import java.io.IOException;
+//import java.net.URL;
 
 public class GamePanel extends JPanel implements ActionListener{
 
@@ -44,10 +47,14 @@ public class GamePanel extends JPanel implements ActionListener{
     Timer timer;
     Random random;
 
+    Image grassImage;
+    Image appleImage;
+    Image dirtImage;
+
     GamePanel() {
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
-        this.setBackground(Color.DARK_GRAY);
+        //this.setBackground(Color.DARK_GRAY);
         this.setFocusable(true);
         this.addKeyListener(new MyKeyAdapter());
         this.addMouseListener(new MouseAdapter() {
@@ -56,7 +63,13 @@ public class GamePanel extends JPanel implements ActionListener{
                 checkClick(e.getX(), e.getY());
             }
         });
-
+        ImageIcon grassIcon = new ImageIcon("res/images/grass-background.jpg");
+        grassImage = grassIcon.getImage();
+        ImageIcon appleIcon = new ImageIcon("images/apple-icon.jpg");
+        appleImage = appleIcon.getImage();
+        ImageIcon dirtIcon = new ImageIcon("res/images/dirt-background.PNG");
+        dirtImage = dirtIcon.getImage();
+        
         startGame();
     }
     public void startGame() {
@@ -68,9 +81,13 @@ public class GamePanel extends JPanel implements ActionListener{
     }
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawImage(dirtImage, 0, 0, this); // dirt background
+        g.drawImage(dirtImage, dirtImage.getWidth(this) - 10, 0, this); 
+        g.drawImage(dirtImage, 0, dirtImage.getHeight(this) - 10, this);
+        g.drawImage(dirtImage, dirtImage.getWidth(this) - 10, dirtImage.getHeight(this) - 10, this);
         draw(g);
 
-        if (newLevelCondition) {
+        if (newLevelCondition) { // new level text
             g.setColor(Color.YELLOW);
             g.setFont(new Font("Ink Free", Font.BOLD, 40));
             FontMetrics metricsNewLevel = g.getFontMetrics();
@@ -96,7 +113,7 @@ public class GamePanel extends JPanel implements ActionListener{
                     g.setColor(Color.GREEN);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 } else { // body of snake
-                    g.setColor(new Color(45,180,0));
+                    g.setColor(Color.GREEN);
                     //g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255))); // random snake color
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
