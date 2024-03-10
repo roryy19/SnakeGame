@@ -50,6 +50,7 @@ public class GamePanel extends JPanel implements ActionListener{
     Image grassImage;
     Image appleImage;
     Image dirtImage;
+    Image liamSnakeImage;
 
     GamePanel() {
         random = new Random();
@@ -65,10 +66,12 @@ public class GamePanel extends JPanel implements ActionListener{
         });
         ImageIcon grassIcon = new ImageIcon("res/images/grass-background.jpg");
         grassImage = grassIcon.getImage();
-        ImageIcon appleIcon = new ImageIcon("images/apple-icon.jpg");
+        ImageIcon appleIcon = new ImageIcon("res/images/apple-png.png");
         appleImage = appleIcon.getImage();
         ImageIcon dirtIcon = new ImageIcon("res/images/dirt-background.PNG");
         dirtImage = dirtIcon.getImage();
+        ImageIcon liamIcon = new ImageIcon("res/images/liam-snake-head.JPG");
+        liamSnakeImage = liamIcon.getImage();
         
         startGame();
     }
@@ -103,15 +106,17 @@ public class GamePanel extends JPanel implements ActionListener{
                 g.drawLine(0, i * UNIT_SIZE, SCREEN_WIDTH, i * UNIT_SIZE); // add horizontal lines to form grid
             }*/
             // draw apple
-            g.setColor(Color.RED);
+            //g.setColor(Color.RED);
             //g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255))); // random apple color
-            g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE);
+            //g.fillOval(appleX, appleY, UNIT_SIZE, UNIT_SIZE); // apple picture
+            g.drawImage(appleImage, appleX - 10, appleY - 15, UNIT_SIZE * 2, UNIT_SIZE * 2, this);
 
             // iterate through all body parts of snake
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) { // head of snake
-                    g.setColor(Color.GREEN);
+                    //g.setColor(Color.GREEN);
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                    g.drawImage(liamSnakeImage, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
                 } else { // body of snake
                     g.setColor(Color.GREEN);
                     //g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255))); // random snake color
@@ -119,9 +124,13 @@ public class GamePanel extends JPanel implements ActionListener{
                 }
             }
             g.setColor(Color.RED);
-            g.setFont(new Font("Ink Free",Font.BOLD, 20));
-            FontMetrics metrics = getFontMetrics(g.getFont());
-            g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metrics.stringWidth("Score : "+applesEaten)) / 2, g.getFont().getSize());
+            g.setFont(new Font("Ink Free",Font.BOLD, 25)); // score and level
+            FontMetrics metricsScore = getFontMetrics(g.getFont());
+            g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metricsScore.stringWidth("Score : "+applesEaten)) / 2 - 75, g.getFont().getSize());
+            g.setColor(Color.RED);
+            g.setFont(new Font("Ink Free", Font.BOLD, 25));
+            FontMetrics metricsLevel = getFontMetrics(g.getFont());
+            g.drawString("Level: " + currentLevel + 1, (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
         } else {
             gameOver(g); 
         }   
@@ -246,9 +255,13 @@ public class GamePanel extends JPanel implements ActionListener{
         FontMetrics metricsGameOver = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metricsGameOver.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 3);
         g.setColor(Color.RED);
-        g.setFont(new Font("Ink Free",Font.BOLD, 20));
-        FontMetrics metricsScoreEnd = getFontMetrics(g.getFont());
-        g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metricsScoreEnd.stringWidth("Score : "+applesEaten)) / 2, g.getFont().getSize());
+            g.setFont(new Font("Ink Free",Font.BOLD, 25)); // score and level
+            FontMetrics metricsScore = getFontMetrics(g.getFont());
+            g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metricsScore.stringWidth("Score : "+applesEaten)) / 2 - 75, g.getFont().getSize());
+            g.setColor(Color.RED);
+            g.setFont(new Font("Ink Free", Font.BOLD, 25));
+            FontMetrics metricsLevel = getFontMetrics(g.getFont());
+            g.drawString("Level: " + currentLevel + 1, (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
 
         // play again button
         g.setColor(Color.WHITE);
