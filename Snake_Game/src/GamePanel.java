@@ -130,7 +130,7 @@ public class GamePanel extends JPanel implements ActionListener{
             g.setColor(Color.RED);
             g.setFont(new Font("Ink Free", Font.BOLD, 25));
             FontMetrics metricsLevel = getFontMetrics(g.getFont());
-            g.drawString("Level: " + currentLevel + 1, (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
+            g.drawString("Level: " + (currentLevel + 1), (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
         } else {
             gameOver(g); 
         }   
@@ -261,7 +261,7 @@ public class GamePanel extends JPanel implements ActionListener{
             g.setColor(Color.RED);
             g.setFont(new Font("Ink Free", Font.BOLD, 25));
             FontMetrics metricsLevel = getFontMetrics(g.getFont());
-            g.drawString("Level: " + currentLevel + 1, (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
+            g.drawString("Level: " + (currentLevel + 1), (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
 
         // play again button
         g.setColor(Color.WHITE);
