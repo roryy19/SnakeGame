@@ -64,13 +64,13 @@ public class GamePanel extends JPanel implements ActionListener{
                 checkClick(e.getX(), e.getY());
             }
         });
-        ImageIcon grassIcon = new ImageIcon("res/images/grass-background.jpg");
+        ImageIcon grassIcon = new ImageIcon("src/res/images/grass-background.jpg");
         grassImage = grassIcon.getImage();
-        ImageIcon appleIcon = new ImageIcon("res/images/apple-png.png");
+        ImageIcon appleIcon = new ImageIcon("src/res/images/apple-png.png");
         appleImage = appleIcon.getImage();
-        ImageIcon dirtIcon = new ImageIcon("res/images/dirt-background.PNG");
+        ImageIcon dirtIcon = new ImageIcon("src/res/images/dirt-background.PNG");
         dirtImage = dirtIcon.getImage();
-        ImageIcon liamIcon = new ImageIcon("res/images/liam-snake-head.JPG");
+        ImageIcon liamIcon = new ImageIcon("src/res/images/liam-snake-head.JPG");
         liamSnakeImage = liamIcon.getImage();
         
         startGame();
