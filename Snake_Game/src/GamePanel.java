@@ -52,6 +52,8 @@ public class GamePanel extends JPanel implements ActionListener{
     Image dirtImage;
     Image liamSnakeImage;
 
+    int highScore;
+
     GamePanel() {
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
@@ -124,13 +126,17 @@ public class GamePanel extends JPanel implements ActionListener{
                 }
             }
             g.setColor(Color.RED);
-            g.setFont(new Font("Ink Free",Font.BOLD, 25)); // score and level
+            g.setFont(new Font("Ink Free",Font.BOLD, 25)); // current/max score and level
             FontMetrics metricsScore = getFontMetrics(g.getFont());
-            g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metricsScore.stringWidth("Score : "+applesEaten)) / 2 - 75, g.getFont().getSize());
+            g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metricsScore.stringWidth("Score : "+applesEaten)) / 2, g.getFont().getSize()); // middle
+            g.setColor(Color.CYAN);
+            g.setFont(new Font("Ink Free",Font.BOLD, 25));
+            FontMetrics metricsHighScore = getFontMetrics(g.getFont());
+            g.drawString("High Score: "+highScore, (SCREEN_WIDTH - metricsHighScore.stringWidth("Score : "+highScore)) / 2 - 185, g.getFont().getSize()); // left
             g.setColor(Color.RED);
             g.setFont(new Font("Ink Free", Font.BOLD, 25));
             FontMetrics metricsLevel = getFontMetrics(g.getFont());
-            g.drawString("Level: " + (currentLevel + 1), (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
+            g.drawString("Level: " + (currentLevel + 1), (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 125, g.getFont().getSize()); //right
         } else {
             gameOver(g); 
         }   
@@ -167,6 +173,7 @@ public class GamePanel extends JPanel implements ActionListener{
         if ((x[0] == appleX) && (y[0] == appleY)) { 
             bodyParts++;
             applesEaten++;
+            highScore = Math.max(highScore, applesEaten);
             if ((applesEaten % 10 )== 0 && DELAY > 40) { // every 10 apples eaten, increase delay as long as it greater than 30
                 currentLevel++;
                 DELAY -= 10;
@@ -251,17 +258,21 @@ public class GamePanel extends JPanel implements ActionListener{
     public void gameOver(Graphics g) {
         // game over text
         g.setColor(Color.RED);
-        g.setFont(new Font("Ink Free",Font.BOLD, 75));
+        g.setFont(new Font("Comic Sans",Font.BOLD, 75));
         FontMetrics metricsGameOver = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metricsGameOver.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 3);
         g.setColor(Color.RED);
-            g.setFont(new Font("Ink Free",Font.BOLD, 25)); // score and level
-            FontMetrics metricsScore = getFontMetrics(g.getFont());
-            g.drawString("Score : "+applesEaten, (SCREEN_WIDTH - metricsScore.stringWidth("Score : "+applesEaten)) / 2 - 75, g.getFont().getSize());
-            g.setColor(Color.RED);
-            g.setFont(new Font("Ink Free", Font.BOLD, 25));
-            FontMetrics metricsLevel = getFontMetrics(g.getFont());
-            g.drawString("Level: " + (currentLevel + 1), (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 75, g.getFont().getSize());
+        g.setFont(new Font("Ink Free",Font.BOLD, 25)); // current/max score and level
+        FontMetrics metricsScore = getFontMetrics(g.getFont());
+        g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metricsScore.stringWidth("Score : "+applesEaten)) / 2, g.getFont().getSize()); // middle
+        g.setColor(Color.CYAN);
+        g.setFont(new Font("Ink Free",Font.BOLD, 25));
+        FontMetrics metricsHighScore = getFontMetrics(g.getFont());
+        g.drawString("High Score: "+highScore, (SCREEN_WIDTH - metricsHighScore.stringWidth("Score : "+highScore)) / 2 - 185, g.getFont().getSize()); // left
+        g.setColor(Color.RED);
+        g.setFont(new Font("Ink Free", Font.BOLD, 25));
+        FontMetrics metricsLevel = getFontMetrics(g.getFont());
+        g.drawString("Level: " + (currentLevel + 1), (SCREEN_WIDTH - metricsLevel.stringWidth("Level: " + currentLevel + 1)) / 2 + 125, g.getFont().getSize()); //right
 
         // play again button
         g.setColor(Color.WHITE);
