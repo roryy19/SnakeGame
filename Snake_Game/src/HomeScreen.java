@@ -13,9 +13,14 @@ public class HomeScreen extends JPanel {
     private int playButtonWidth;
     private int playButtonHeight;
 
+    private Image dirtImage;
+
     public HomeScreen(JFrame frame) {
         this.frame = frame;
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
+
+        ImageIcon dirtIcon = new ImageIcon("src/res/images/dirt-background.PNG");
+        dirtImage = dirtIcon.getImage();
         setBackground(Color.BLACK);
         addMouseListener(new MouseAdapter() {
             @Override
@@ -42,6 +47,10 @@ public class HomeScreen extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
+        g.drawImage(dirtImage, 0, 0, this); // dirt background
+        g.drawImage(dirtImage, dirtImage.getWidth(this) - 10, 0, this); 
+        g.drawImage(dirtImage, 0, dirtImage.getHeight(this) - 10, this);
+        g.drawImage(dirtImage, dirtImage.getWidth(this) - 10, dirtImage.getHeight(this) - 10, this);
         drawPlayButton(g);
     }
     private void drawPlayButton(Graphics g) {

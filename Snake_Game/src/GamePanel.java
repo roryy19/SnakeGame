@@ -234,11 +234,6 @@ public class GamePanel extends JPanel implements ActionListener{
     public void checkClick(int x, int y) {
         // play again button
         if (!running) { // top left origin
-            System.out.println("x:" + retryButtonX);
-            System.out.println("y:" + retryButtonY);
-            System.out.println("xW:" + retryButtonWidth);
-            System.out.println("yH:" + retryButtonHeight);
-            System.out.println("coords: " + x + " " + y);
             if (x >= retryButtonX && x <= (retryButtonX + retryButtonWidth) // within x coords
                 && y >= retryButtonY && y <= (retryButtonY + retryButtonHeight)) { // within y coords
                 resetGame();
