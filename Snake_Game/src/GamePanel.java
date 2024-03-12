@@ -68,9 +68,11 @@ public class GamePanel extends JPanel implements ActionListener{
         });
         /*ImageIcon grassIcon = new ImageIcon("src/res/images/grass-background.jpg");
         grassImage = grassIcon.getImage();*/
-        ImageIcon appleIcon = new ImageIcon("src/res/images/apple-png.png");
+        //ImageIcon appleIcon = new ImageIcon("src/res/images/apple-png.png");
+        ImageIcon appleIcon = new ImageIcon(getClass().getResource("/res/images/apple-png.png"));
         appleImage = appleIcon.getImage();
-        ImageIcon dirtIcon = new ImageIcon("src/res/images/dirt-background.PNG");
+        //ImageIcon dirtIcon = new ImageIcon("src/res/images/dirt-background.PNG");
+        ImageIcon dirtIcon = new ImageIcon(getClass().getResource("/res/images/dirt-background.PNG"));
         dirtImage = dirtIcon.getImage();
         /*ImageIcon liamIcon = new ImageIcon("src/res/images/liam-snake-head.JPG");
         liamSnakeImage = liamIcon.getImage();*/

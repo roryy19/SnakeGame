@@ -19,7 +19,8 @@ public class HomeScreen extends JPanel {
         this.frame = frame;
         setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
 
-        ImageIcon dirtIcon = new ImageIcon("src/res/images/dirt-background.PNG");
+        //ImageIcon dirtIcon = new ImageIcon("src/res/images/dirt-background.PNG");
+        ImageIcon dirtIcon = new ImageIcon(getClass().getResource("/res/images/dirt-background.PNG"));
         dirtImage = dirtIcon.getImage();
         setBackground(Color.BLACK);
         addMouseListener(new MouseAdapter() {
