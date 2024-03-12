@@ -47,10 +47,10 @@ public class GamePanel extends JPanel implements ActionListener{
     Timer timer;
     Random random;
 
-    Image grassImage;
-    Image appleImage;
-    Image dirtImage;
-    Image liamSnakeImage;
+    //private Image grassImage;
+    private Image appleImage;
+    private Image dirtImage;
+    //private Image liamSnakeImage;
 
     int highScore;
 
@@ -66,14 +66,14 @@ public class GamePanel extends JPanel implements ActionListener{
                 checkClick(e.getX(), e.getY());
             }
         });
-        ImageIcon grassIcon = new ImageIcon("src/res/images/grass-background.jpg");
-        grassImage = grassIcon.getImage();
+        /*ImageIcon grassIcon = new ImageIcon("src/res/images/grass-background.jpg");
+        grassImage = grassIcon.getImage();*/
         ImageIcon appleIcon = new ImageIcon("src/res/images/apple-png.png");
         appleImage = appleIcon.getImage();
         ImageIcon dirtIcon = new ImageIcon("src/res/images/dirt-background.PNG");
         dirtImage = dirtIcon.getImage();
-        ImageIcon liamIcon = new ImageIcon("src/res/images/liam-snake-head.JPG");
-        liamSnakeImage = liamIcon.getImage();
+        /*ImageIcon liamIcon = new ImageIcon("src/res/images/liam-snake-head.JPG");
+        liamSnakeImage = liamIcon.getImage();*/
         
         startGame();
     }
@@ -216,7 +216,7 @@ public class GamePanel extends JPanel implements ActionListener{
             running = false;
         }
         // check if head touches right border
-        if (x[0] > SCREEN_WIDTH) {
+        if (x[0] > SCREEN_WIDTH - UNIT_SIZE) {
             running = false;
         }
         // check if head touches top border
@@ -224,7 +224,7 @@ public class GamePanel extends JPanel implements ActionListener{
             running = false;
         }
         // check if head touches bottom border
-        if (y[0] > SCREEN_HEIGHT) {
+        if (y[0] > SCREEN_HEIGHT - UNIT_SIZE) {
             running = false;
         }
         if (!running) {
@@ -234,6 +234,11 @@ public class GamePanel extends JPanel implements ActionListener{
     public void checkClick(int x, int y) {
         // play again button
         if (!running) { // top left origin
+            System.out.println("x:" + retryButtonX);
+            System.out.println("y:" + retryButtonY);
+            System.out.println("xW:" + retryButtonWidth);
+            System.out.println("yH:" + retryButtonHeight);
+            System.out.println("coords: " + x + " " + y);
             if (x >= retryButtonX && x <= (retryButtonX + retryButtonWidth) // within x coords
                 && y >= retryButtonY && y <= (retryButtonY + retryButtonHeight)) { // within y coords
                 resetGame();
