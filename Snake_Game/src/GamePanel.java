@@ -116,11 +116,11 @@ public class GamePanel extends JPanel implements ActionListener{
             // iterate through all body parts of snake
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) { // head of snake
-                    //g.setColor(Color.GREEN);
-                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
-                    g.drawImage(liamSnakeImage, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
-                } else { // body of snake
                     g.setColor(Color.GREEN);
+                    g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
+                    //g.drawImage(liamSnakeImage, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
+                } else { // body of snake
+                    g.setColor(new Color(23, 102, 31));
                     //g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255))); // random snake color
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
@@ -258,7 +258,7 @@ public class GamePanel extends JPanel implements ActionListener{
     public void gameOver(Graphics g) {
         // game over text
         g.setColor(Color.RED);
-        g.setFont(new Font("Comic Sans",Font.BOLD, 75));
+        g.setFont(new Font("Ink Free",Font.BOLD, 75));
         FontMetrics metricsGameOver = getFontMetrics(g.getFont());
         g.drawString("Game Over", (SCREEN_WIDTH - metricsGameOver.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 3);
         g.setColor(Color.RED);
