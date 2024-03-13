@@ -8,6 +8,7 @@ import java.util.Random;
 
 public class GamePanel extends JPanel implements ActionListener{
 
+    private JFrame frame;
     static final int SCREEN_WIDTH = 600;
     static final int SCREEN_HEIGHT = 600;
     static final int UNIT_SIZE = 25;
@@ -40,6 +41,11 @@ public class GamePanel extends JPanel implements ActionListener{
     int retryButtonY;
     int retryButtonWidth;
     int retryButtonHeight;
+
+    private int homeButtonX;
+    private int homeButtonY;
+    private int homeButtonWidth;
+    private int homeButtonHeight;
     
     char direction = 'R'; // snake begins game going right
 
@@ -54,7 +60,8 @@ public class GamePanel extends JPanel implements ActionListener{
 
     int highScore;
 
-    GamePanel() {
+    public GamePanel(JFrame frame) {
+        this.frame = frame;
         random = new Random();
         this.setPreferredSize(new Dimension(SCREEN_WIDTH, SCREEN_HEIGHT));
         //this.setBackground(Color.DARK_GRAY);
@@ -118,11 +125,11 @@ public class GamePanel extends JPanel implements ActionListener{
             // iterate through all body parts of snake
             for (int i = 0; i < bodyParts; i++) {
                 if (i == 0) { // head of snake
-                    g.setColor(Color.GREEN);
+                    g.setColor(GameSettings.getSnakeColor());
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                     //g.drawImage(liamSnakeImage, x[i], y[i], UNIT_SIZE, UNIT_SIZE, this);
                 } else { // body of snake
-                    g.setColor(new Color(23, 102, 31));
+                    g.setColor(GameSettings.getSnakeColor());
                     //g.setColor(new Color(random.nextInt(255), random.nextInt(255), random.nextInt(255))); // random snake color
                     g.fillRect(x[i], y[i], UNIT_SIZE, UNIT_SIZE);
                 }
@@ -236,9 +243,15 @@ public class GamePanel extends JPanel implements ActionListener{
     public void checkClick(int x, int y) {
         // play again button
         if (!running) { // top left origin
+            //retry button
             if (x >= retryButtonX && x <= (retryButtonX + retryButtonWidth) // within x coords
                 && y >= retryButtonY && y <= (retryButtonY + retryButtonHeight)) { // within y coords
                 resetGame();
+            }
+            // home button
+            if (x >= homeButtonX && x <= (homeButtonX + homeButtonWidth) && 
+            y >= homeButtonY && y <= (homeButtonY + homeButtonHeight)) {
+            startHome();
             }
         }
     }
@@ -257,14 +270,24 @@ public class GamePanel extends JPanel implements ActionListener{
 
         startGame();
     }
+    private void startHome() {
+        frame.remove(this); // remove game screen
+        HomeScreen homeScreen = new HomeScreen(frame);
+        frame.add(homeScreen);
+        frame.pack();
+        homeScreen.requestFocusInWindow();
+        frame.validate();
+    }
     public void gameOver(Graphics g) {
         // game over text
         g.setColor(Color.RED);
         g.setFont(new Font("Ink Free",Font.BOLD, 75));
         FontMetrics metricsGameOver = getFontMetrics(g.getFont());
-        g.drawString("Game Over", (SCREEN_WIDTH - metricsGameOver.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 3);
+        g.drawString("Game Over", (SCREEN_WIDTH - metricsGameOver.stringWidth("Game Over")) / 2, SCREEN_HEIGHT / 3 + 50);
         g.setColor(Color.RED);
-        g.setFont(new Font("Ink Free",Font.BOLD, 25)); // current/max score and level
+        g.setFont(new Font("Ink Free",Font.BOLD, 25)); 
+        
+        // current/max score and level
         FontMetrics metricsScore = getFontMetrics(g.getFont());
         g.drawString("Score: "+applesEaten, (SCREEN_WIDTH - metricsScore.stringWidth("Score : "+applesEaten)) / 2, g.getFont().getSize()); // middle
         g.setColor(Color.CYAN);
@@ -286,6 +309,17 @@ public class GamePanel extends JPanel implements ActionListener{
         retryButtonHeight = metricsPlayAgain.getHeight();   // height of text
         g.drawString("Play Again", retryButtonX, retryButtonY);
         retryButtonY = retryButtonY - metricsPlayAgain.getAscent(); // gets top of highest character, for mouse click
+    
+        // home button
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Ink Free", Font.BOLD, 50));
+        FontMetrics metricsHome = g.getFontMetrics();
+        homeButtonX = 10; 
+        homeButtonY = 100; 
+        homeButtonWidth = metricsHome.stringWidth("Home"); 
+        homeButtonHeight = metricsHome.getHeight(); 
+        g.drawString("Home", homeButtonX, homeButtonY); 
+        homeButtonY = homeButtonY - metricsHome.getAscent();
     }
     @Override
     public void actionPerformed(ActionEvent e) {
